@@ -12,6 +12,16 @@ router.get('/books/add', (req, res, next) => {
 
 
 
+
+//http://localhost:3000/book_detail/5cc7433733493add41ad77fb
+router.get('/book_detail/:id', (req,res,next)=>{
+  Book.findById(req.params.id).populate('author').then(book=>{
+    res.render('book_detail', {book})
+  })
+})
+
+
+
 router.get('/books', (req,res,next) =>{  //triggered when going to books page 
   Book.find().then( booksFromDb =>{  //find all books in the database 
     res.render('books', { booksInHBS : booksFromDb }) //send all the books to the books.hbs file 
@@ -53,6 +63,21 @@ router.post('/books/add', (req, res, next) => {
 });
 
 
+router.get('/book/:id', (req, res, next) => {
+  let bookId = req.params.id;
+  if (!/^[0-9a-fA-F]{24}$/.test(bookId)) { 
+    return res.status(404).render('not-found');
+  }
+  Book.findOne({'_id': bookId})
+    .populate('author')
+    .then(book => {
+      if (!book) {
+          return res.status(404).render('not-found');
+      }
+      res.render("book-detail", { book })
+    })
+    .catch(next)
+});
 
 
 
