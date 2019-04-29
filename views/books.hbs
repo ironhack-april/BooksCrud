@@ -1,0 +1,16 @@
+books.hbs
+<ul>
+{{#each  booksInHBS}}
+  <li>
+    {{title}} <b>{{rating}}</b> <br>
+    {{description}} <br>
+    <i>written by {{author}}</i>
+  </li>
+    <p>
+      <a href="/books/edit?book_id={{_id}}" class="edit-button">EDIT</a>
+      <a href="/books/delete?book_id={{_id}}">DELETE</a>
+    </p>
+
+  <br>
+{{/each}}
+</ul>
